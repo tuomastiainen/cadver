@@ -1,0 +1,73 @@
+{% extends 'creocheck/base.html' %}
+{% block body %}
+
+
+<a href="/">
+    Back
+</a>
+<header>
+    <h1>Check for {{ task.assignment.name }}</h1>
+</header>
+
+<p>
+Submitted file: {{ task.file.display_name }}
+</p>
+<p>
+Comparing to file: {{ task.assignment.correct_file.name }}
+</p>
+
+<hr>
+<table id="task-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Check function</th>
+            <th>Description</th>
+            <!--<th>Info</th>-->
+            <th>Passed</th>
+            <th>Check log</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for check in checks %}
+        <tr>
+            <th><small>{{ check.template.name }}</small></th>
+            <th><small>{{ check.template.check_func }}</small></th>
+            <th><small>{{ check.template.description }}</small></th>
+            <!--<th>{{ check.status }}</th>-->
+            {% if check.passed %}
+            <th><i style='color:green' class='fa fa-check' aria-hidden='true'></i></th>
+            {% else %}
+            <th><center><i style='color:red' class='fa fa-times' aria-hidden='true'></i></center></th>
+            {% endif %}
+            <th style="white-space:nowrap;">
+                <small>
+                    {% for i in check.checklogevent_set.all %}
+                    {{ i }}<br>
+                    {% endfor %}
+                </small>
+            </th>
+
+
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<style>
+
+div.half {
+    width: 20%;
+    margin: auto;
+        #border: 3px solid #73AD21;
+}
+
+tr.active {
+    background: #b8d1f3;
+}
+</style>
+
+{% endblock %}

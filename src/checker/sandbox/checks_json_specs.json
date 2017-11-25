@@ -1,0 +1,56 @@
+# massprop
+
+[
+    {
+    "paramset" : {"THICK": false, "PARAM2": 50}
+    "volume" : 500,
+    "surface_area" : 400
+    },
+    {
+    "paramset" : {"THICK": true, "PARAM2": 40}
+    "volume" : null,
+    "surface_area" : null
+    }
+
+]
+
+
+# regen
+
+[
+    {
+    "paramset" : {"THICK": false, "PARAM2": 50}
+    },
+    {
+    "paramset" : {"THICK": false, "PARAM2": 40}
+    }
+
+]
+
+
+# modeltree
+
+[
+    {
+    "paramset" : {"THICK": false, "PARAM2": 50},
+    "modeltree": ["PROTRUSION", "PROTRUSION"]
+    },
+    {
+    "paramset" : {"THICK": false, "PARAM2": 40}
+    "modeltree": null
+    }
+]
+
+
+# macro
+
+[
+    {
+    "paramset" : {"THICK": false, "PARAM2": 50},
+    "custom_funcs": ["func1", "func2"]
+    }
+]
+
+
+
+

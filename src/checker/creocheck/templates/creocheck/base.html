@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+<title>CADVER</title>
+{% load static %}
+
+<html lang="en">
+    <head>
+        <script src="https://use.fontawesome.com/b26e0746db.js"></script>
+        <meta charset="utf-8">
+        <meta name="description" content="CAD file checker">
+        <title>CADVER</title>
+        <link rel="stylesheet" href="{% static "sakura.css" %}" type="text/css">
+        <link rel="stylesheet" href="{% static "dropzone.css" %}">
+        <script src="{% static "jquery-3.2.1.min.js" %}"></script>
+        <script src="{% static "dropzone.js" %}"></script>
+        <script src="{% static "progressbar.js" %}"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+
+    </head>
+
+
+    <body>
+        {% block body %}
+        {% endblock %}
+    </body>
+
+</html>

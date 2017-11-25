@@ -1,0 +1,79 @@
+{% extends 'creocheck/base.html' %}
+{% block body %}
+
+
+<header>
+    <h1>Admin</h1>
+</header>
+
+<div class="topnav">
+    Assignment collection:
+  <a class="active" href="#home">Home</a>
+</div>
+
+<div class="topnav">
+  Assignment:
+  <a class="active" href="#home">All</a>
+  <a class="active" href="#home">Home</a>
+</div>
+
+
+<button type="button">CSV export</button>
+
+<hr>
+<table id="task-table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Attempts</th>
+            <th>Check details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <th>{{ u.user_id }}</th>
+            <th>{{ u.checktask_set.count }}</th>
+            <th>
+                <table>
+                {% for t in u.checktask_set.all %}
+                <small>
+                    <th width="500px" >
+                    {{ t.assignment.name }}<br>
+                    {{ t.created | date:"d.m.Y H:m:s"}}<br>
+                    ID: {{ t.pk }}<br>
+                    <a href="{{ t.file.file.url }}">{{ t.file.display_name }}</a><br>
+                    Passed: {{ t.passed }}<br>
+                    Following checks were run: <br>
+                    {% for check in t.check_set.all %}
+                    {{ check }}: {{ check.passed }}<br>
+                    {% endfor %}
+                    </th>
+                </small>
+                {% endfor %}
+                </table>
+            </th>
+
+
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<style>
+
+div.half {
+    width: 20%;
+    margin: auto;
+        #border: 3px solid #73AD21;
+}
+
+tr.active {
+    background: #b8d1f3;
+}
+</style>
+
+{% endblock %}

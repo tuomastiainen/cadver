@@ -1,0 +1,185 @@
+{% extends 'creocheck/base.html' %}
+{% block body %}
+{% if active_user %} <small>Logged in as {{ active_user }} - <a href="{% url "logout" %}">Log out</a></small>  <br>{% endif %}
+<small>For support, please contact <a href="mailto:{{ admin_email }}">{{ admin_email }}</a></small>
+<header>
+    <h2>CADVER</h2>
+    <h3>CAD Exercise Assessment System</h3>
+</header>
+
+
+
+    <p><label for="select">Select assignment</label> <select id="assignment">
+        {% for a in assignments %}
+        <option id="{{ a.pk }}" >
+            {{ a.name }}
+        </option>
+        {% endfor %}
+    </select></p>
+
+
+
+<form action="{% url "receive_file" %}" class="dropzone" id="dropzoneJsForm"></form>
+<br>
+<br>
+<hr>
+<br>
+
+<table id="task-table">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Assignment</th>
+            <th>File</th>
+            <th>Progress</th>
+            <th>Task status</th>
+            <th>Passed</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+
+<style>
+
+div.half {
+    width: 20%;
+    margin: auto;
+        #border: 3px solid #73AD21;
+}
+
+tr.active {
+    background: #b8d1f3;
+}
+</style>
+
+
+<script>
+
+Dropzone.autoDiscover = false;
+
+    $(document).ready(function() {
+
+
+        var table = $('#task-table').DataTable( {
+            "ajax": '{% url "update_tasks" %}',
+            "dom": "tr",
+            "bSort" : false,
+            "fnCreatedRow" : function (row, data, dataIndex) {
+                var id = $("td:eq(0)", row).text();
+
+
+                tick = "<i style='color:green' class='fa fa-check' aria-hidden='true'></i>";
+                cross = "<i style='color:red' class='fa fa-times' aria-hidden='true'></i>";
+
+                var passed= $("td:eq(5)", row);
+                if (passed.text() == "true"){
+                    passed.html(tick);
+                }
+                else if ($("td:eq(4)", row).text() == "PENDING") {
+                    passed.html("");
+                }
+                else {
+                    passed.html(cross);
+                }
+
+                var open = $("td:eq(6)", row);
+                open.html('<button type="button">Details</button>');
+
+
+
+
+                var cell = $("td:eq(3)", row);
+                var progress = parseFloat($("td:eq(3)", row).text());
+                var div = document.createElement("div");
+                cell.html("<div class='barcontainer' id='bar" + id + "'></div>");
+                console.log(progress)
+                cell.data();
+                table.draw();
+                bar = new ProgressBar.Line("#bar" + id, {
+                    strokeWidth: 5,
+                    easing: 'easeInOut',
+                    duration: 500,
+                    color: '#226b77',
+                    trailColor: '#eee',
+                    trailWidth: 1,
+                    svgStyle: null,
+                    step: (state, bar) => {
+                        bar.setText(Math.round(bar.value() * 100) + ' %');
+                    },
+                    text: {
+                        style: {
+                            color: '#999',
+                            position: 'center',
+                            right: '0',
+                            top: '20px',
+                            padding: 0,
+                            margin: 0,
+                            transform: null
+                        },
+                    }
+
+                });
+                bar.set(progress);
+
+
+            },
+
+        });
+        var bar;
+
+        $('#task-table').on( 'click', 'tr', function () {
+            var id = $("td:eq(0)", this).text();
+            if (id) location.href = "task/" + id;
+            });
+
+
+
+
+
+
+        function update_tasks(){
+            table.ajax.reload( function(json){
+            });
+
+            <!--bar.animate(0.7);-->
+
+        }
+
+        var delay = {{ refresh_rate }};
+
+        setInterval(update_tasks, delay);
+
+
+        //DROP ZONE
+        var md = new Dropzone(".dropzone", {
+            url: "{% url "receive_file" %}",
+
+            init: function() {
+            this.on("sending", function(file, xhr, formData){
+                formData.append("assignment_name", $("#assignment").val() );
+            });
+            },
+
+
+            maxFilesize: "50",
+            addRemoveLinks: false,
+        });
+
+        md.on("complete", function (file) {
+            if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                setTimeout(function(){
+                    //location.reload();
+                }, 1000);
+            }
+        });
+
+
+    });
+
+
+
+</script>
+
+{% endblock %}

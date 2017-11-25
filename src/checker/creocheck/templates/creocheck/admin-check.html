@@ -1,0 +1,63 @@
+{% extends 'creocheck/admin-base.html' %}
+{% block body %}
+
+
+
+    <!-- Page Content -->
+    <div class="container">
+      <div class="row pt-3">
+          <div class="col-lg-12">
+              <h1>Details for checktask {{ checktask }}</h1>
+              <h4>User: {{ checktask.user }}</h4>
+              <h4>Passed: {{ checktask.passed }}</h4>
+              <h4>Timestamp: {{ checktask.created | date:"d.m.y H:i:s"}}</h4>
+              <h4>Uploaded file:  <a href="{{ checktask.file.file.url }}">{{ checktask.file.display_name }}</a></h4>
+
+              <hr>
+
+
+              <h4>Assignment: {{ checktask.assignment }}</h4>
+              <h4>Correct file:  <a href="{{ checktask.assignment.correct_file.file.url }}">{{ checktask.assignment.correct_file }}</a></h4>
+
+              <hr>
+              <h2>Check details</h2>
+              <table class="table" id="task-table">
+                  <thead>
+                      <tr>
+                          <th>Check template name</th>
+                          <th>Check function</th>
+                          <th>Description</th>
+                          <th>Info</th>
+                          <th>Passed</th>
+                          <th>Check log</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for check in checktask.check_set.all %}
+                      <tr>
+                          <th><small>{{ check.template.name }}</small></th>
+                          <th><small>{{ check.template.check_func }}</small></th>
+                          <th><small>{{ check.template.description }}</small></th>
+                          <th><small>{{ check.status }}</small></th>
+                          <th><small>{{ check.passed }}</small></th>
+                          <th style="white-space:nowrap;">
+                              <small>
+                                  {% for i in check.checklogevent_set.all %}
+                                  {{ i }}<br>
+                                  {% endfor %}
+                              </small>
+                          </th>
+
+
+
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <hr>
+
+    </div>
+
+{% endblock %}
