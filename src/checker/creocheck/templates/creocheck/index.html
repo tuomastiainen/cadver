@@ -61,6 +61,20 @@ Dropzone.autoDiscover = false;
 
     $(document).ready(function() {
 
+        //preserve the selection in localstorage
+        $('#assignment').on('change', function() {
+            localStorage.setItem("selected_assignment", $(this).val());
+        });
+
+        // if localstorage val does not exist, default to the first
+
+        if ($('#assignment').length) {
+            $('#assignment').val(localStorage.getItem("selected_assignment"));
+            if ($('#assignment').val() == null) {
+                $("#assignment").val($("#assignment option:first").val());
+            }
+        }
+
 
         var table = $('#task-table').DataTable( {
             "ajax": '{% url "update_tasks" %}',

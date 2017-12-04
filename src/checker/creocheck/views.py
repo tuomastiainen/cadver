@@ -44,9 +44,9 @@ def checks_admin(request):
         selected_assignment = Assignment.objects.get(
             pk=request.session.get("active_assignment"))
         tasks = CheckTask.objects.filter(
-            assignment=selected_assignment).order_by("-passed")
+            assignment=selected_assignment).order_by("-passed", "-created")
     except:
-        tasks = CheckTask.objects.all().order_by("-passed")
+        tasks = CheckTask.objects.all().order_by("-passed", "-created")
     context = {}
     context.update({"tasks": tasks})
     return render(request, "creocheck/admin-main.html", context)
@@ -74,9 +74,9 @@ def admin_excel_export(request):
         selected_assignment = Assignment.objects.get(
             pk=request.session.get("active_assignment"))
         tasks = CheckTask.objects.filter(
-            assignment=selected_assignment).order_by("-passed")
+            assignment=selected_assignment).order_by("-passed", "-created")
     except:
-        tasks = CheckTask.objects.all().order_by("-passed")
+        tasks = CheckTask.objects.all().order_by("-passed", "-created")
 
     print("EXPORT to EXCEL")
     header = ["Check ID", "User ID", "Timestamp",

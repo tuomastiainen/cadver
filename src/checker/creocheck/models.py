@@ -45,6 +45,8 @@ class AssignmentCollection(models.Model):
 
 class Assignment(models.Model):
 
+    order = models.SmallIntegerField(default=0)
+
     collection = models.ForeignKey(AssignmentCollection)
 
     name = models.CharField(max_length=50)
@@ -54,6 +56,10 @@ class Assignment(models.Model):
 
     def __str__(self):
         return "{} - {}".format(self.pk, self.name)
+
+
+    class Meta:
+        ordering = ['order']
 
 
 class CheckTemplate(models.Model):
@@ -149,6 +155,10 @@ class CheckTask(models.Model):
 
     def __str__(self):
         return "{}".format(self.pk)
+
+
+    class Meta:
+        ordering = ['-passed', '-created']
 
 
 class Check(models.Model):
