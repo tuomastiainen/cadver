@@ -10,6 +10,7 @@ from django.conf import settings
 #from creocheck.models import CheckTemplate
 import json
 import random
+import re
 
 
 if os.name == 'nt':
@@ -43,6 +44,9 @@ class PythonCreoConnection():
         options = Dispatch('pfcls.pfcRetrieveModelOptions')
         o = options.Create()
         file = Dispatch('pfcls.pfcModelDescriptor')
+
+        # VBAPI fails if it is given a creo file with the version number appended
+        path = re.sub(r"\.prt(\.[0-9]+)", ".prt", path)
 
         f = file.CreateFromFilename(path)
         self.models.append(self.session.RetrieveModelWithOpts(f, o))
