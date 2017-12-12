@@ -38,22 +38,23 @@ CADVER also requires the following software to work:
 
 CD into the directory where you want to install CADVER
 
+Clone the repository and install Python packages:
 
 ```
 git clone git@github.com:tuomastiainen/cadver.git
 mkvirtualenv env-name
+cd cadver
 pip install -r requirements.txt
-
 ```
 
 
 
-The development server can then be started with:
-```
-python manage.py runserver
-```
 
-#### Django settings
+
+
+
+
+#### Configuring Django settings
 
 Edit settings.py:
 
@@ -65,6 +66,46 @@ Set a unique secret key for production (random 50 character string)
 * When settings.DEBUG is True, the system administration interface requires no login.
 
 
+#### Configuring Creo
+
+* Install and activate the Creo VBAPI (run C:\Program Files\PTC\Creo 3.0\M110\Parametric\bin\vb_api_register.bat)
+
+* Use the provided config.pro file or set the following settings manually. 
+
+* For the mass prop checks and regeneration to work, the following settings are needed:
+```
+regen_failure_handling = resolve_mode
+mass_property_calculate = automatic
+```
+
+
+If not properly configured, the following settings produce annoyances which do not matter, as the VBAPI can be used regardless:
+
+* The settings to disable the Creo community popups did not work.
+
+* last_session_directory_path. Creo requires that this is a local directory. Make sure that Windows UAC does not restrict Creo's write access to the folder.
+
+
+### Running the system
+The development server can then be started with:
+```
+workon env-name
+python manage.py runserver
+```
+
+To run check tasks via Creo, a Creo session and a Celery worker must be started:
+```
+workon env-name
+python manage.py celeryd
+```
+
+### Running tests
+
+Basic unit tests have been implemented for CADVER. If run on a Windows system and a Creo session is running (parameter in test base class), the tests actually open a model and run checks.
+
+```
+python manage.py test
+```
 
 
 ## Using the system
@@ -91,7 +132,7 @@ http://127.0.0.1:8000/
 * When files with the selected assignment are uploaded, a CheckTask object is created and Check objects are created from all the related CheckTemplates. If all of the checks pass, the CheckTask is marked as passed.
 
 ### Available check functions
-MassPropChecker
+#### MassPropChecker
 The mass prop checker will regenerate the model with the given paramsets. The class then populates all null fields with real values from the assignment's correct file. If no null values are present, the correct file is not needed and will not be opened. By default, there is a 1% relative tolerance for each of the checks.
 
 ```
@@ -123,7 +164,7 @@ The paramset can also be left empty ("paramset": {}). In this case, the model is
 ```
 
 
-RegenChecker
+#### RegenChecker
 The regen checker tries to regenerate the model with all of the given paramsets and passes if the regenerations succeed.
 
 ```
@@ -137,7 +178,7 @@ The regen checker tries to regenerate the model with all of the given paramsets 
     ]
 ```
 
-ModelTreeChecker
+#### ModelTreeChecker
 
 The model tree checker can be used to verify if the model tree of the returned file is correct when the model has been regenerated with a certain paramset (the paramset can also be left empty).  A base feature will need to be specified (by feature name). Creo starts listing child features from this base feature and forms the model tree (by feature type names) read into CADVER.
 
@@ -162,7 +203,7 @@ If the modeltree is provided as a list of feature type names, the comparison is 
 
 
 
-MacroRunner
+#### MacroRunner
 
 The MacroRunner is a class to run any custom functions with custom parameters. These will need to be implemented in the MacroRunner class.
 
@@ -176,37 +217,18 @@ The MacroRunner is a class to run any custom functions with custom parameters. T
 ```
 
 
-SaveMetaData
+#### SaveMetaData
 
 Can be used to dump any possible metadata associated to the model file. Unfortunately Creo does not save as much information as other CAD programs. Also a possibility would be to use hash of file or some filesystem info to save here.
 
 
 
-SleepOneSecond
+#### SleepOneSecond
 
 Does nothing but sleeps one second. Can be used for testing purposes. Also generates logs.
 
 
 
-
-### CREO VBAPI
-
-
-The system can be used to run checks via Creo's VBAPI. When developing, the checks and the connection can be tested by running creo.py, which is the core Creo wrapper of the system:
-
-```
-python creo.py
-```
-
-
-
-## Running tests
-
-Basic unit tests have been implemented for CADVER. The tests only cover functionality in Django. If a Creo session is running (parameter in test base class), the tests actually open a model and run checks.
-
-```
-python manage.py test
-```
 
 
 ## Built With
@@ -226,4 +248,4 @@ python manage.py test
 
 ## Acknowledgments
 
-* I would like to thank my thesis instructors Panu Kiviluoma and Kaur Jaakma
+* I would like to thank my thesis instructors Panu Kiviluoma and Kaur Jaakma for valuable advice and guidance during the project.
