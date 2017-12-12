@@ -86,6 +86,19 @@ If not properly configured, the following settings produce annoyances which do n
 * last_session_directory_path. Creo requires that this is a local directory. Make sure that Windows UAC does not restrict Creo's write access to the folder.
 
 
+
+### Running tests
+
+
+The tests can be used to verify that the win32com/Creo VBAPI connection works.
+Start a Creo session and run
+```
+python manage.py test
+```
+
+If run on a Windows system and a Creo session is running (parameter in test base class), the tests open a cube model and run some checks.
+
+
 ### Running the system
 The development server can then be started with:
 ```
@@ -99,13 +112,6 @@ workon env-name
 python manage.py celeryd
 ```
 
-### Running tests
-
-Basic unit tests have been implemented for CADVER. If run on a Windows system and a Creo session is running (parameter in test base class), the tests actually open a model and run checks.
-
-```
-python manage.py test
-```
 
 
 ## Using the system
