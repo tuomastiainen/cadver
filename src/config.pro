@@ -12,4 +12,7 @@ todays_date_note_format %Mmm-%dd-%yy
 tolerance_standard ansi
 weld_ui_standard ansi
 search_path_file $CREO_COMMON_FILES\afx\parts\prolibrary\search.pro
-last_session_directory_path C:\
+last_session_directory_path C:\cadver
+mass_property_calculate automatic
+regen_failure_handling resolve_mode
+
