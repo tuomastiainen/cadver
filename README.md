@@ -120,7 +120,7 @@ python manage.py celeryd
 
 The system consists of an interface which can be used to select an assignment and upload files. Before using the interface, session variables containing a unique user identifier and an assignment collection must be activated by visiting a link:
 ```
-http://127.0.0.1:8000/
+http://127.0.0.1:8000/login/?user_id=123123&ac_name=ac123
 ```
 
 
