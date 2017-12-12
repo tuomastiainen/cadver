@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import traceback
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -183,6 +184,6 @@ NOSE_ARGS = [
 ]
 
 try:
-    from local_settings import *
+    from checker.local_settings import *
 except:
-    pass
+    print(traceback.format_exc())
