@@ -4,13 +4,6 @@ CADVER is a prototype online system for automatic assessment of mechanical engin
 
 Using CAD software API's, CADVER compares returned CAD modelling exercises to specified correct files or given information.
 
-<!--![CADVER main page](/cadverui.png)-->
-
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
 ### Overview
 
 
@@ -22,6 +15,12 @@ The following software are required to use CADVER:
 * pywin32 - Python for Windows Extensions (https://github.com/mhammond/pywin32)
 * Creo Parametric 3.0 M 110
 * Celery task queue
+
+
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 
 ### Installing
