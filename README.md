@@ -6,14 +6,12 @@ Using CAD software API's, CADVER compares returned CAD modelling exercises to sp
 
 ### Overview
 
-
 CADVER runs on Python 3.5 and requires Creo Parametric 3.0. M110
 
-The following software are required to use CADVER:
+The following software are required to run CADVER:
 
-
-* pywin32 - Python for Windows Extensions (https://github.com/mhammond/pywin32)
 * Creo Parametric 3.0 M 110
+* pywin32 - Python for Windows Extensions (https://github.com/mhammond/pywin32)
 * Celery task queue
 
 
