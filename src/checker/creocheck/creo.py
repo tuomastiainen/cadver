@@ -305,7 +305,7 @@ class ModelTreeChecker(CheckBase):
 
             for i in self.data:
                 if i.get("modeltree") is None:
-                    conn.open_file(self.check_file_path)
+                    conn.open_file(self.correct_file_path)
                     conn.activate_window(1)
                     model = conn.models[1]
 
@@ -412,36 +412,35 @@ class SleepOneSecond(CheckBase):
 
 
 
-# import sys
-# if __name__ == "__main__":
-#     if False:
-#         import sys
-#         from win32com.client import makepy
-#
-#         sys.argv = ["makepy", r"C:\Program Files\PTC\Creo 3.0\M050\Common Files\x86e_win64\obj\pfclscom.exe"]
-#         #sys.argv = ["makepy", r"C:\cadver\src\checker\sandbox"]
-#         makepy.main ()
-#
-#     from pprint import pprint
-#
-#     with PythonCreoConnection() as conn:
-#
-#         f2 = u"C:\\lego_correct_20171003.prt"
-#
-#         conn.open_file(f2)
-#         conn.activate_window(0)
-#         model = conn.models[0]
-#         conn.set_parameter(model, "SIZE_V", 2)
-#         conn.set_parameter(model, "SIZE_H", 2)
-#         conn.set_parameter(model, "THIN", True)
-#         instrs = Dispatch('pfcls.pfcRegenInstructions')
-#         regen_instructions = instrs.Create(False, True, None)
-#         model.Regenerate(regen_instructions)
-#         checked_tree = []
-#         base = (model.GetFeatureByName("BASE"))
-#         children = base.ListChildren()
-#         for i in range(0, children.Count):
-#             checked_tree.append(children.Item(i).FeatTypeName)
-#         conn.close_window()
-#
-#         print(checked_tree)
+import sys
+if __name__ == "__main__":
+    if False:
+        import sys
+        from win32com.client import makepy
+
+        sys.argv = ["makepy", r"C:\Program Files\PTC\Creo 3.0\M050\Common Files\x86e_win64\obj\pfclscom.exe"]
+        makepy.main ()
+
+    from pprint import pprint
+
+    with PythonCreoConnection() as conn:
+
+        f2 = u"C:\\lego_correct_20171003.prt"
+
+        conn.open_file(f2)
+        conn.activate_window(0)
+        model = conn.models[0]
+        conn.set_parameter(model, "SIZE_V", 2)
+        conn.set_parameter(model, "SIZE_H", 2)
+        conn.set_parameter(model, "THIN", True)
+        instrs = Dispatch('pfcls.pfcRegenInstructions')
+        regen_instructions = instrs.Create(False, True, None)
+        model.Regenerate(regen_instructions)
+        checked_tree = []
+        base = (model.GetFeatureByName("BASE"))
+        children = base.ListChildren()
+        for i in range(0, children.Count):
+            checked_tree.append(children.Item(i).FeatTypeName)
+        conn.close_window()
+
+        print(checked_tree)

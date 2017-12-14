@@ -1,6 +1,6 @@
 @echo off
 
-SET VIRTUALENV_PATH=C:\Users\sa.tiainet2\Envs\testenv\
+SET VIRTUALENV_PATH=C:\Users\USERNAME\Envs\testenv\
 SET CADVER_PATH=C:\cadver
 SET CREO_PATH=C:\Program Files\PTC\Creo 3.0\M110\Parametric\bin
 
