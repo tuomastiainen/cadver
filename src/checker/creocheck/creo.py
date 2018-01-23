@@ -208,12 +208,11 @@ class MassPropChecker(CheckBase):
                 massprop = model.GetMassProperty(None)
                 i.update({"read_surface_area": massprop.SurfaceArea})
                 i.update({"read_volume": massprop.Volume})
-
-                #conn.close_window()
+            conn.close_window()
 
             # save time by not opening the correct file if values are already
             # present in the dict
-            open_correct_file = False
+
             for i in self.data:
                 if None in i.values():
                     open_correct_file = True
@@ -222,8 +221,9 @@ class MassPropChecker(CheckBase):
 
             if open_correct_file:
                 conn.open_file(self.correct_file_path)
-                conn.activate_window(1)
-                model = conn.models[1]
+                #conn.activate_window(1)
+                #print(conn.models)
+                model = conn.models[2]
 
                 for i in self.data:
                     conn.set_parameter(model, "MP_DENSITY", 1)
@@ -246,6 +246,7 @@ class MassPropChecker(CheckBase):
 
                             if key == "surface_area":
                                 i[key] = massprop.SurfaceArea
+                    print(i)
                 conn.close_window()
 
     def form_check_result(self):

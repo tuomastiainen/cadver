@@ -156,7 +156,7 @@ CELERY_IGNORE_RESULT = True
 
 
 # this is needed to form file paths
-ROOT = u"C:\\cadver-private\\src\\checker"
+ROOT = u"C:\\cadver\\src\\checker"
 
 
 # Provide allowed file extensions in lower case
