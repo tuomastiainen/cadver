@@ -209,45 +209,39 @@ class MassPropChecker(CheckBase):
                 i.update({"read_surface_area": massprop.SurfaceArea})
                 i.update({"read_volume": massprop.Volume})
             conn.close_window()
-
             # save time by not opening the correct file if values are already
             # present in the dict
 
+
+        with PythonCreoConnection() as conn:
+            conn.open_file(self.correct_file_path)
+            conn.activate_window(0)
+            #print(conn.models)
+            model = conn.models[0]
+
+
             for i in self.data:
-                if None in i.values():
-                    open_correct_file = True
+                conn.set_parameter(model, "MP_DENSITY", 1)
+                paramset = i.get("paramset")
 
-            # replace none values with correct
+                #self.log(
+                #    "Regenerating correct model with paramset: {}".format(paramset))
 
-            if open_correct_file:
-                conn.open_file(self.correct_file_path)
-                #conn.activate_window(1)
-                #print(conn.models)
-                model = conn.models[2]
+                conn.assign_paramset(model, paramset)
+                conn.regenerate(model)
 
-                for i in self.data:
-                    conn.set_parameter(model, "MP_DENSITY", 1)
-                    paramset = i.get("paramset")
+                # if needed (None is present), regenerate correct model
+                # with paramset
+                massprop = model.GetMassProperty(None)
+                for key in i:
+                    value = i[key]
+                    if value is None:
+                        if key == "volume":
+                            i[key] = massprop.Volume
 
-                    #self.log(
-                    #    "Regenerating correct model with paramset: {}".format(paramset))
-
-                    conn.assign_paramset(model, paramset)
-                    conn.regenerate(model)
-
-                    # if needed (None is present), regenerate correct model
-                    # with paramset
-                    massprop = model.GetMassProperty(None)
-                    for key in i:
-                        value = i[key]
-                        if value is None:
-                            if key == "volume":
-                                i[key] = massprop.Volume
-
-                            if key == "surface_area":
-                                i[key] = massprop.SurfaceArea
-                    print(i)
-                conn.close_window()
+                        if key == "surface_area":
+                            i[key] = massprop.SurfaceArea
+            conn.close_window()
 
     def form_check_result(self):
         self.passed = True

@@ -21,11 +21,12 @@ class CadverTestCase(TestCase):
         self.CREO_RUNNING = True
 
 
+
         massprop_params = """
             [
                 {
                 "paramset" : {},
-                "volume" : 1,
+                "volume" : 10,
                 "surface_area" : 6
                 },
                 {
@@ -34,11 +35,22 @@ class CadverTestCase(TestCase):
                 "surface_area" : null
                 }
             ] """
+
         massprop_params = """
             [
                 {
                 "paramset" : {},
-                "volume" : 10,
+                "volume" : null,
+                "surface_area" : null
+                },
+                {
+                "paramset" : {},
+                "volume" : null,
+                "surface_area" : null
+                },
+                {
+                "paramset" : {},
+                "volume" : 1,
                 "surface_area" : 6
                 },
                 {
@@ -136,6 +148,7 @@ class test_cadver_views(CadverTestCase):
 
     def test_post_file(self):
 
+        #with open("test_files/cube_incorrect.prt.1", 'rb') as f:
         with open("test_files/cube.prt.1", 'rb') as f:
             c = Client()
             r = self.c.get('/login/?user_id=123123&ac_name=123', follow=True)
