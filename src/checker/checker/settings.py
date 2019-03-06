@@ -58,8 +58,8 @@ MIDDLEWARE_CLASSES = [
 ]
 
 
-if DEBUG:
-    MIDDLEWARE_CLASSES += ['checker.auto_auth.AutoAuthMiddleware', ]
+# if DEBUG:
+#     MIDDLEWARE_CLASSES += ['checker.auto_auth.AutoAuthMiddleware', ]
 
 ROOT_URLCONF = 'checker.urls'
 
